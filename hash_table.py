@@ -9,20 +9,29 @@ class HashTable:
             h += ord(char)
         return h % self.max
 
-    def __getitem__(self, key):
+    def add(self,key):
         h = self.get_hash(key)
-        for element in self.array[h]:
-            if element[0] == key:
-                return element[1]
+        if self.array[h] is None:
+            self.array[h] = []
+            self.array[h].append(key)
+        else:
+            for keyAlreadyThere in self.array[h]:
+                if keyAlreadyThere == key:
+                    break
+            else:
+                self.array[h].append(key)
 
-    def __setitem__(self, key, value):
+        return h
+
+    def __getitem__(self,key):
         h = self.get_hash(key)
-        found = False
-        for idx, element in enumerate(self.array[h]):
-            if len(element) == 2 and element[0] == key:
-                self.array[h][idx] = (key, value)
-                found = True
-                break
-        if not found:
-            self.array[h].append((key,value))
+        if self.array[h] is None:
+            return None
+        else:
+            for k in self.array[h]:
+                if k == key:
+                    return h
+            return None
 
+    def __str__(self):
+        return str(self.array)
