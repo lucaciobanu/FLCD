@@ -1,0 +1,16 @@
+For the Symbol Table implementation I used a hash table. (only the HashTable class is of interest)
+Function get_hash :
+In – key : string
+Out – h : int
+The get_hash computes the "hash function" for a given key. The key represents the Identifier or Constant name.
+The function computes the sum of every character's ASCII code from the key. After that the result is sum % maximum nr of values stored (which by default will be 100)
+
+Function add:
+In – key:  string
+Out – h : int
+The add function adds a list to the corresponding “h” position if there was no previous element on that position. Otherwise it checks if the key was already in the list corresponding to position “h”. If that is not the case then the element is added to the list. The function returns the position “h” where the element was stored.
+
+Function __getitem__:
+In – key : string
+Out – h : int 
+The  __getitem__ function searches for a given key in the table and returns its “h” position. In case the key does not exist in the table then the function returns None.
