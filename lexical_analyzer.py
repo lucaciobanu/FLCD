@@ -6,16 +6,17 @@ pif = PIF()
 st = HashTable()
 
 reserved_words =[]
-input_file = "p1err.txt"
+input_file = "p1.txt"
 
 allowed_characters ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+allowed_string_constant_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 with open("token.in.txt", "r") as file:
     read_tokens = [x for x in file.read().split("\n") if len(x) != 0]
     for tok in read_tokens:
         reserved_words.append(tok)
 
-def isConstant(token):
+def isIntConstant(token):
     try:
         int(token)
         return True
@@ -23,7 +24,21 @@ def isConstant(token):
     except ValueError:
         return False
 
+def isStringConstant(token):
+    if token[0] == "\"" and token[len(token) - 1] == "\"":
+        actualToken = token[-1:len(token) -1]
+        for char in actualToken:
+            if char not in allowed_string_constant_characters:
+                return False
+        return True
+    return False
 
+def isCharConstant(token):
+    if token[0] == "'" and token[len(token) - 1] =="'":
+        if token[1] not in allowed_string_constant_characters:
+            return False
+        return True
+    return False
 
 def isIdentifier(token):
     for char in token:
@@ -39,10 +54,54 @@ with open(input_file, "r") as file:
          groupOfWords = re.split('([^"\'a-zA-Z0-9])', line)
          words = list(filter(lambda x: x is not None and x != '', map(lambda x: x.strip(), groupOfWords)))
 
+         i = 0
+         while i < len(words) - 1:
+             if words[i] == "=" and words[i+1] == "=":
+                 words[i] = "=="
+                 del words[i+1]
+             if words[i] == "<" and words[i+1] == "=":
+                 words[i] = "<="
+                 del words[i+1]
+             if words[i] == ">" and words[i+1] == "=":
+                 words[i] = ">="
+                 del words[i+1]
+             if words[i] == "!" and words[i+1] == "=":
+                 words[i] = "!="
+                 del words[i+1]
+             if words[i] == "+" and words[i+1] == "=":
+                 words[i] = "+="
+                 del words[i+1]
+             if words[i] == "-" and words[i+1] == "=":
+                 words[i] = "-="
+                 del words[i+1]
+             if words[i] == "&" and words[i+1] == "&":
+                 words[i] = "&&"
+                 del words[i+1]
+             if words[i] == "|" and words[i+1] == "|":
+                 words[i] = "||"
+                 del words[i+1]
+             if words[i] == "<" and words[i+1] == "<":
+                 words[i] = "<<"
+                 del words[i+1]
+             if words[i] == ">" and words[i+1] == ">":
+                 words[i] = ">>"
+                 del words[i+1]
+             if words[i] == "-" and isIntConstant(words[i+1]):
+                 words[i] = "-" + words[i+1]
+                 del words[i+1]
+
+             i += 1
+
          for word in words:
              if word in reserved_words:
                  pif[word] = -1
-             elif isConstant(word):
+             elif isIntConstant(word):
+                 position = st.add(word)
+                 pif[word] = position
+             elif isStringConstant(word):
+                 position = st.add(word)
+                 pif[word] = position
+             elif isCharConstant(word):
                  position = st.add(word)
                  pif[word] = position
              elif isIdentifier(word):
@@ -53,8 +112,23 @@ with open(input_file, "r") as file:
          line = file.readline()
          line_nr += 1
 
-     print(st, "\n")
-     print(pif)
+     with open("st.out", "w") as file:
+         file.write(str(st))
+
+     with open("pif.out", "w") as file:
+         file.write(str(pif))
 
      print("The program is lexically correct!")
+
+
+
+
+
+
+
+
+
+
+
+
 
