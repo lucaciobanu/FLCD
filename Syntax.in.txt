@@ -1,0 +1,20 @@
+program ::= "Function" "{" declarationList ";" cmpstmt "}"
+declarationList ::= declaration | declaration ";" declarationList
+declaration ::= type IDENTIFIER
+type ::= "Number"| "Character"| "String"| "Vector" "[" nr "]"
+
+cmpdstmt ::= "{" stmtlist "}"
+stmt ::= simpleStmt | structStmt
+
+simpleStmt::= assignStmt | ioStmt 
+assignStmt ::= IDENTIFIER "=" expression ";"
+expression ::= expression "+" term | term
+term ::= term "*" factor | factor
+factor ::= "(" expression ")" | IDENTIFIER
+
+iostmt ::= "read>>" | "write<<" IDENTIFIER ";"
+structstmt ::= cmpdstmt|ifstmt|whilestmt
+ifstmt ::= "verify" condition stmt ["otherwise" stmt]
+whilestmt::= "aslongas" condition stmt
+condition ::= expression relation expression
+relation ::= "<"|"<="|"="|"!="|">="|">" 

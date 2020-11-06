@@ -1,0 +1,25 @@
+a. Special symbols, representing:
+- operators +, -, *, /, =, <, <=, ==, >=, incrementeaza?
+- separators [], {}, ;, space
+- reserved words: Function, Main, Number, Vector, String, Character, read>>, show<<, verify, otherwise, forevery, aslongas, finish 
+
+b. Identifiers:
+identifier ::= letter|letter{letter}{digit}
+letter ::= "a"|"b"|...|"z"|"A"|...|"Z"
+digit ::= "0"|"1"|...|"9"
+
+c. Constants:
+1. Number
+number_const:= "0"|["+"|"-"]nonzerodigit{"0"|nonzerodigit}
+nonzerodigit:= "1"|...|"9"
+
+2. Character
+char_const:=letter|digit
+letter ::= "a"|"b"|...|"z"|"A"|...|"Z"
+digit ::= "0"|"1"|...|"9"
+
+3. String
+string_const := char{string_const}
+char := letter|digit
+letter ::= "a"|"b"|...|"z"|"A"|...|"Z"
+digit ::= "0"|"1"|...|"9"
